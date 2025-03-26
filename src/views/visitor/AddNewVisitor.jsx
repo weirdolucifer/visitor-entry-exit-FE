@@ -14,11 +14,9 @@ const AddNewVisitor = ({ open, onClose, fetchData, onActionClick }) => {
     phone: '',
     address: '',
     email: '',
-    blood_group: '',
     visitor_type: '',
     gov_id_type: '',
     gov_id_no: '',
-    signature: '',
     image: ''
   }
 
@@ -26,9 +24,7 @@ const AddNewVisitor = ({ open, onClose, fetchData, onActionClick }) => {
   const [visitorData, setVisitorData] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [imageModalOpen, setImageModalOpen] = useState(false);
-  const [signatureModalOpen, setSignatureModalOpen] = useState(false);
   const [imageData, setImageData] = useState('');
-  const [signatureData, setSignatureData] = useState('');
 
   const validate = () => {
     const newErrors = {};
@@ -92,8 +88,7 @@ const AddNewVisitor = ({ open, onClose, fetchData, onActionClick }) => {
     if (!validate()) return;
     try {
       visitorData.image = imageData;
-      visitorData.signature = signatureData;
-      const response = await fetch(`${url}/visitor/visitor-info`, {
+      const response = await fetch(`${url}/visitor/visitor-info/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -109,8 +104,12 @@ const AddNewVisitor = ({ open, onClose, fetchData, onActionClick }) => {
         handleClose();
         fetchData();
       } else {
-        const json = await response.json();
-        Notification.showErrorMessage("Error", json.error);
+        for (let [field, messages] of Object.entries(json)) {
+          console.log(messages);
+          messages.forEach(message => {
+              Notification.showErrorMessage("Error", `${field}: ${message}`);
+          });
+      }
       }
     } catch (error) {
       Notification.showErrorMessage("Error", "Server error");
@@ -122,17 +121,11 @@ const AddNewVisitor = ({ open, onClose, fetchData, onActionClick }) => {
     setImageModalOpen(false);
   };
 
-  const handleSignatureCapture = (base64Image) => {
-    setSignatureData(base64Image);
-    setSignatureModalOpen(false);
-  };
-
   const handleClose = () => {
     onClose();
     setActiveStep(0);
     setErrors({});
     setImageData("");
-    setSignatureData("");
     setVisitorData(initialValues);
   }
 
@@ -214,8 +207,8 @@ const AddNewVisitor = ({ open, onClose, fetchData, onActionClick }) => {
             >
               <option value="">Select Visitor Type</option>
               <option value="civilian">civilian</option>
-              <option value="serving-service">internal</option>
-              <option value="foreigner">gov agency</option>
+              <option value="internal">internal</option>
+              <option value="gov agency">gov agency</option>
             </select>
             {errors.visitor_type && <div className="text-red-500 text-xs">{errors.visitor_type}</div>}
 
