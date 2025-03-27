@@ -43,8 +43,7 @@ const Visitor = () => {
   const [totalVisitors, setTotalVisitors] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [searchParams, setSearchParams] = useState({
-    first_name__icontains: '',
-    last_name__icontains: '',
+    name__icontains: '',
     phone__icontains: '',
     gov_id_no__icontains: '',
     offset: 0,

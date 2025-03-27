@@ -73,19 +73,11 @@ const Visitors = ({ visitors, totalVisitors, isLoading, onActionClick, searchPar
           <input
             className="appearance-none border border-customGreen rounded-3xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-700"
             type="text"
-            name="first_name"
+            name="name"
             value={searchParams.first_name}
             onChange={handleSearchChange}
             placeholder="Search by name"
           />
-          {/* <input
-            className="appearance-none border border-customGreen rounded-3xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-700"
-            type="text"
-            name="last_name"
-            value={searchParams.last_name}
-            onChange={handleSearchChange}
-            placeholder="Search by last name"
-          /> */}
           <input
             className="appearance-none border border-customGreen rounded-3xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-700"
             type="text"
@@ -94,14 +86,14 @@ const Visitors = ({ visitors, totalVisitors, isLoading, onActionClick, searchPar
             onChange={handleSearchChange}
             placeholder="Search by phone number"
           />
-          {/* <input
+          <input
             className="appearance-none border border-customGreen rounded-3xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-700"
             type="text"
             name="gov_id_no"
             value={searchParams.gov_id_no}
             onChange={handleSearchChange}
             placeholder="Search by govt ID number"
-          /> */}
+          />
           <select
             value={searchParams.limit}
             onChange={handleLimitChange}
