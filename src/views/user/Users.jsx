@@ -20,8 +20,8 @@ const Users = ({ users, isLoading, onActionClick }) => {
 
   useEffect(() => {
     const filtered = users?.filter(user =>
-      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchTerm.toLowerCase())
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      `${user.name}`.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredUsers(filtered);
   }, [searchTerm, users]);
@@ -118,12 +118,6 @@ const Users = ({ users, isLoading, onActionClick }) => {
                 <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
                   Work Location
                 </th>
-                <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
-                  Department
-                </th>
-                <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
-                  Action
-                </th>
               </tr>
             </thead>
             <tbody>
@@ -136,29 +130,23 @@ const Users = ({ users, isLoading, onActionClick }) => {
                           <img src={`data:image/jpeg;base64,${user.image}`} alt="User" />
                         ) : (
                           <div className="h-full w-full flex items-center justify-center text-white bg-customGreen">
-                            {user.username ? user.username.charAt(0).toUpperCase() : 'N'}
+                            {user.name ? user.name.charAt(0).toUpperCase() : 'N'}
                           </div>
                         )}
                       </div>
                     </div>
                   </td>
                   <td className="py-4 px-6 border-b border-grey-light">
-                    {user.username}
+                    {user.id}
                   </td>
                   <td className="py-4 px-6 border-b border-grey-light">
-                    {user.first_name} {user.last_name}
+                    {user.name}
                   </td>
                   <td className="py-4 px-6 border-b border-grey-light">
-                    {user.user_type}
+                    {user.rank}
                   </td>
                   <td className="py-4 px-6 border-b border-grey-light">
-                    {user.employee_code}
-                  </td>
-                  <td className="py-4 px-6 border-b border-grey-light">
-                    {user.work_location}
-                  </td>
-                  <td className="py-4 px-6 border-b border-grey-light">
-                    {user.department}
+                    {user.extension}
                   </td>
                   <td className="py-4 px-6 border-b border-grey-light">
                     <IconButton

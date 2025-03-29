@@ -44,6 +44,7 @@ function Content() {
     };
 
     checkAuth();
+    console.log(userType);
     window.addEventListener("storage", checkAuth);
     return () => window.removeEventListener("storage", checkAuth);
   }, [navigate]);

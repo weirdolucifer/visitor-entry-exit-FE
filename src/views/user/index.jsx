@@ -29,11 +29,19 @@ const User = () => {
 
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchParams, setSearchParams] = useState({
+    name__icontains: '',
+    phone__icontains: '',
+    gov_id_no__icontains: '',
+    offset: 0,
+    limit: 10
+  });
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${url}/accounts/get-all-user/`, {
+      const queryString = new URLSearchParams(searchParams).toString();
+      const response = await fetch(`${url}/accounts/employee/?${queryString}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

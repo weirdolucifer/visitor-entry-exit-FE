@@ -50,7 +50,7 @@ const SideBar = () => {
     return null;
   }
 
-  const navItems = role === 'Admin' ? navItemsAdmin : navItemsReceptionist;
+  const navItems = role === 'admin' ? navItemsAdmin : navItemsReceptionist;
 
   return (
     <aside className={`bg-customGreen transition-width duration-300 ${isCollapsed ? 'w-16' : 'w-56'}`} aria-label="Sidebar">
