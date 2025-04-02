@@ -4,30 +4,29 @@ import Notification from '../../components/notification';
 import { url } from '../../utils/Constants';
 import Select from 'react-select';
 import ViewPass from "./ViewPass";
-import CameraModal from "../../components/camera";
 import MultipleSelectDropdown from './MultipleSelectDropdown';
 
 const CreateNewPass = ({ open, onClose, visitor }) => {
     const initialValues = {
         visitor: visitor.id,
-        validity: '',
+        valid_until: '',
         visiting_purpose: '',
         key: '',
         whom_to_visit: '',
-        pass_type: '',
+        visiting_department: '',
         zones_allowed: [],
     };
 
-    const steps = ['Pass Details', 'Zone Access'];
+    const steps = ['Visitor Details', 'Meeting Details', 'Zone Access'];
     const [passData, setPassData] = useState(initialValues);
     const [errors, setErrors] = useState({});
+    const [keyList, setKeyList] = useState([]);
+    const [zoneList, setZoneList] = useState([]);
     const [activeStep, setActiveStep] = useState(0);
     const [isConflict, setIsConflict] = useState(false);
     const [previousVisitor, setPreviousVisitor] = useState({});
     const [showViewPass, setShowViewPass] = useState(false);
     const [passCreated, setPassCreated] = useState({});
-    const [imageModalOpen, setImageModalOpen] = useState(false);
-    const [imageData, setImageData] = useState('');
 
     // useEffect(() => {
     //     fetchKeyList();
@@ -40,6 +39,47 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
             visitor: visitor?.id,
         }));
     }, [visitor]);
+
+    const fetchKeyList = async () => {
+        try {
+            const response = await fetch(`${url}/key/key-info`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            const json = await response.json();
+            if (response.ok) {
+                // const unassignedKeys = json.filter(key => !key.is_assigned);
+                setKeyList(json);
+            } else {
+                Notification.showErrorMessage('Try Again!', json.error);
+            }
+        } catch (err) {
+            Notification.showErrorMessage('Error', 'Server error!');
+        }
+    };
+
+    const fetchZoneList = async () => {
+        try {
+            const response = await fetch(`${url}/zone/zone-info`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            const json = await response.json();
+            if (response.ok) {
+                setZoneList(json.map(zone => ({ id: zone.id, name: zone.zone_name })));
+            } else {
+                Notification.showErrorMessage('Try Again!', json.error);
+            }
+        } catch (err) {
+            Notification.showErrorMessage('Error', 'Server error!');
+        }
+    };
 
     // const handleZoneChange = (newSelectedZones) => {
     //     setPassData({ ...passData, zones_allowed: newSelectedZones });
@@ -54,11 +94,13 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
 
     const validate = () => {
         let newErrors = {};
-        if (activeStep === 0) {
+        if (activeStep === 1) {
             if (!String(passData.visitor).trim()) newErrors.visitor = 'Visitor ID is required';
-            if (!passData.pass_type.trim()) newErrors.pass_type = 'Pass Type is required';
-            if (!passData.validity.trim()) newErrors.validity = 'Validity is required';
-            if (!passData.local_pass_id) newErrors.local_pass_id = 'Local Pass ID is required';
+            if (!passData.valid_until.trim()) newErrors.valid_until = 'Validity date is required';
+        } else if (activeStep === 0) {
+            if (!passData.visiting_purpose.trim()) newErrors.visiting_purpose = 'Visiting purpose is required';
+            if (!passData.whom_to_visit.trim()) newErrors.whom_to_visit = 'Whom to visit is required';
+            if (!passData.visiting_department) newErrors.visiting_department = 'Visiting department is required';
         }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -124,11 +166,6 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
         }
     };
 
-    const handleImageCapture = (base64Image) => {
-        setImageData(base64Image);
-        setImageModalOpen(false);
-      };
-
     const handleOverWriteSubmit = async () => {
         if (!validate()) return;
         try {
@@ -172,6 +209,61 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
             case 0:
                 return (
                     <div className="flex flex-col space-y-4">
+                        <label htmlFor="visiting_purpose" className="text-sm font-medium text-gray-700">
+                            Visiting Purpose
+                        </label>
+                        <input
+                            type="text"
+                            id="visiting_purpose"
+                            name="visiting_purpose"
+                            placeholder="Visiting Purpose"
+                            value={passData.visiting_purpose}
+                            onChange={handleInputChange}
+                            className={`border-2 p-3 rounded-lg ${errors.visiting_purpose ? 'border-red-500' : 'border-gray-300'}`}
+                        />
+                        {errors.visiting_purpose && <div className="text-red-500 text-xs">{errors.visiting_purpose}</div>}
+
+                        <label htmlFor="whom_to_visit" className="text-sm font-medium text-gray-700">
+                            Whom to Visit
+                        </label>
+                        <input
+                            type="text"
+                            id="whom_to_visit"
+                            name="whom_to_visit"
+                            placeholder="Whom to Visit"
+                            value={passData.whom_to_visit}
+                            onChange={handleInputChange}
+                            className={`border-2 p-3 rounded-lg ${errors.whom_to_visit ? 'border-red-500' : 'border-gray-300'}`}
+                        />
+                        {errors.whom_to_visit && <div className="text-red-500 text-xs">{errors.whom_to_visit}</div>}
+
+                        <label htmlFor="visiting_department" className="text-sm font-medium text-gray-700">
+                            Visiting Department
+                        </label>
+                        <select
+                            id="visiting_department"
+                            name="visiting_department"
+                            value={passData.visiting_department}
+                            onChange={handleInputChange}
+                            className={`border-2 p-3 rounded-lg ${errors.visiting_department ? 'border-red-500' : 'border-gray-300'}`}
+                        >
+                            <option value="">Select Department</option>
+                            <option value="Air Force">Air Force</option>
+                            <option value="Army">Army</option>
+                            <option value="CPWD">CPWD</option>
+                            <option value="Defence">Defence</option>
+                            <option value="DGQA">DGQA</option>
+                            <option value="IFA (Army-Q )">IFA (Army-Q )</option>
+                            <option value="MOD">MOD</option>
+                            <option value="MTNL">MTNL</option>
+                            <option value="Navy">Navy</option>
+                        </select>
+                        {errors.visiting_department && <div className="text-red-500 text-xs">{errors.visiting_department}</div>}
+                    </div>
+                );
+            case 1:
+                return (
+                    <div className="flex flex-col space-y-4">
                         <label htmlFor="visitor" className="text-sm font-medium text-gray-700">
                             Visitor ID
                         </label>
@@ -186,72 +278,73 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
                             className={`border-2 p-3 rounded-lg ${errors.visitor ? 'border-red-500' : 'border-gray-300'}`}
                         />
                         {errors.visitor && <div className="text-red-500 text-xs">{errors.visitor}</div>}
-                        
-                        <label htmlFor="visiting_department" className="text-sm font-medium text-gray-700">
-                            Pass Type
-                        </label>
-                        <select
-                            id="pass_type"
-                            name="pass_type"
-                            value={passData.pass_type}
-                            onChange={handleInputChange}
-                            className={`border-2 p-3 rounded-lg ${errors.pass_type ? 'border-red-500' : 'border-gray-300'}`}
-                        >
-                            <option value="">Select Pass Type</option>
-                            <option value="visitor">Visitor</option>
-                            <option value="foreigner_visitor">Visitor (Foreigner)</option>
-                            <option value="work_pass">Work Pass</option>
-                            <option value="na">Not Applicable</option>
-                        </select>
-                        {errors.pass_type && <div className="text-red-500 text-xs">{errors.pass_type}</div>}
 
-                        <label htmlFor="validity" className="text-sm font-medium text-gray-700">
+                        <label htmlFor="key" className="text-sm font-medium text-gray-700">
+                            Key
+                        </label>
+                        <Select
+                            classNamePrefix="custom-select"
+                            value={keyList.map(({ id, RFID_key }) => ({ value: id, label: RFID_key })).find(option => option.value === passData.key)}
+                            onChange={option => handleInputChange({
+                                target: {
+                                    name: 'key',
+                                    value: option ? option.value : ''
+                                }
+                            })}
+                            options={keyList.map(({ id, RFID_key }) => ({ value: id, label: RFID_key }))}
+                            placeholder="Select Key"
+                            isClearable={true}
+                            isSearchable={true}
+                            styles={{
+                                control: (base, state) => ({
+                                    ...base,
+                                    border: '2px solid',
+                                    borderRadius: '0.5rem',
+                                    padding: '8px',
+                                    borderColor: '#d1d5db',
+                                    // borderColor: state.isFocused ? (errors.key ? '#dc2626' : '#d1d5db') : (errors.key ? '#dc2626' : '#d1d5db')
+                                }),
+                                menu: (base) => ({
+                                    ...base,
+                                    maxHeight: '200px',
+                                    overflow: 'auto',
+                                    padding: '5px'
+                                })
+                            }}
+                        />
+                        {errors.key && <div className="text-red-500 text-xs">{errors.key}</div>}
+
+                        <label htmlFor="valid_until" className="text-sm font-medium text-gray-700">
                             Valid Until
                         </label>
                         <input
                             type="datetime-local"
-                            id="validity"
-                            name="validity"
-                            value={passData.validity}
+                            id="valid_until"
+                            name="valid_until"
+                            value={passData.valid_until}
                             onChange={handleInputChange}
-                            className={`border-2 p-3 rounded-lg ${errors.validity ? 'border-red-500' : 'border-gray-300'}`}
+                            className={`border-2 p-3 rounded-lg ${errors.valid_until ? 'border-red-500' : 'border-gray-300'}`}
                         />
-                        {errors.validity && <div className="text-red-500 text-xs">{errors.validity}</div>}
-
-                        <label htmlFor="local_pass_id" className="text-sm font-medium text-gray-700">
-                            Local Pass ID
-                        </label>
-                        <input
-                            type="text"
-                            id="local_pass_id"
-                            name="local_pass_id"
-                            placeholder="Local Pass ID"
-                            value={passData.local_pass_id}
-                            onChange={handleInputChange}
-                            className={`border-2 p-3 rounded-lg ${errors.local_pass_id ? 'border-red-500' : 'border-gray-300'}`}
-                        />
-                        {errors.local_pass_id && <div className="text-red-500 text-xs">{errors.local_pass_id}</div>}
+                        {errors.valid_until && <div className="text-red-500 text-xs">{errors.valid_until}</div>}
                     </div>
                 );
-            case 1:
+            case 2:
                 return (
-                    <div className="flex flex-row space-x-4 p-4">
-                    <div className="space-y-4 flex flex-col items-center">
-                        <label htmlFor="image" className="text-sm font-semibold text-gray-700">Pass Image</label>
-                        <div className="border-2 border-gray-300 rounded-lg p-3 flex items-center justify-center relative" style={{ width: '200px', height: '200px' }}>
-                        {imageData ? (
-                            <img src={`data:image/jpeg;base64,${imageData}`} alt="Captured Image" className="max-h-full max-w-full rounded" />
-                        ) : (
-                            <span className="text-gray-500">No image captured</span>
+                    <div className="flex flex-col space-y-4">
+                        <label className="text-sm font-medium text-gray-700">
+                            Zones Allowed
+                        </label>
+                        <MultipleSelectDropdown
+                            options={zoneList}
+                            selectedOptions={selectedZones}
+                            onChange={handleZoneChange}
+                        />
+                        {errors.zones_allowed && (
+                            <div className="text-red-500 text-xs">
+                                {errors.zones_allowed}
+                            </div>
                         )}
-                        </div>
-                        <button className="flex items-center bg-customGreen hover:bg-green-700 text-white py-1 px-4 rounded-3xl" onClick={() => setImageModalOpen(true)}>
-                        Capture Pass Image
-                        </button>
-                        <CameraModal open={imageModalOpen} onClose={() => setImageModalOpen(false)} onCaptured={handleImageCapture} />
                     </div>
-                    </div>
-        
                 );
             default:
                 return 'Unknown step';

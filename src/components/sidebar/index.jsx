@@ -16,7 +16,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 const navItemsAdmin = [
   { name: 'Dashboard', icon: <HomeOutlinedIcon />, path: '/' },
   { name: 'Visitors', icon: <PeopleOutlinedIcon />, path: '/visitor' },
-  { name: 'Users', icon: <ListIcon />, path: '/user' },
+  { name: 'Employees', icon: <ListIcon />, path: '/user' },
+  { name: 'Department', icon: <ListIcon />, path: '/dept' },    // need to define api
   { name: 'Passes', icon: <CreditCardIcon />, path: '/pass' },
   { name: 'Reports', icon: <ReceiptIcon />, path: '/report' },
   { name: 'FAQ', icon: <ForumIcon />, path: '/faq' },
