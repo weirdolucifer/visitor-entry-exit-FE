@@ -29,11 +29,11 @@ const ViewPass = ({ open, onClose, passData }) => {
                 <div className="col-span-1 p-2 border-r-2 border-gray-300">
                     <div className='flex flex-col items-center space-y-4 pb-2'>
                         <img src={passlogo} alt="Pass Logo" className="h-16 w-32" />
-                        {passData?.pass_image ? (
-                            <img src={`data:image/jpeg;base64,${passData?.pass_image}`} alt="Pass" className="h-32 w-32 border-2 border-gray-300 rounded-xl object-cover" />
+                        {passData?.visitor_image ? (
+                            <img src={`data:image/jpeg;base64,${passData?.visitor_image}`} alt="Pass" className="h-32 w-32 border-2 border-gray-300 rounded-xl object-cover" />
                         ) : (
                             <div className="h-32 w-32 border-2 border-gray-300 flex items-center justify-center text-white bg-customGreen rounded-xl">
-                                {passData.pass_type ? passData.visitor_name.charAt(0).toUpperCase() : 'N/A'}
+                                {passData.visitor_image ? passData.visitor_name.charAt(0).toUpperCase() : 'N/A'}
                             </div>
                         )}
                     </div>
