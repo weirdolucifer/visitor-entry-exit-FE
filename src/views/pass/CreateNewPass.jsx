@@ -11,11 +11,8 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
     const initialValues = {
         visitor: visitor.id,
         validity: '',
-        visiting_purpose: '',
-        key: '',
-        whom_to_visit: '',
         pass_type: '',
-        zones_allowed: [],
+        pass_image: '',
     };
 
     const steps = ['Pass Details', 'Zone Access'];
@@ -83,7 +80,8 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
     const handleSubmit = async () => {
         if (!validate()) return;
         try {
-            const response = await fetch(`${url}/passes/visitor-pass-info`, {
+            passData.pass_image = imageData;
+            const response = await fetch(`${url}/passes/pass-info/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
