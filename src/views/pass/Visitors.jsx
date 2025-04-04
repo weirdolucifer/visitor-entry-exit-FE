@@ -58,6 +58,16 @@ const Passes = ({ Pass, totalPass, isLoading, onActionClick, searchParams, setSe
     setSearchParams({ ...searchParams, offset });
   };
 
+  const passTypes = {
+    "visitor": "Visitor",
+    "emp_work_pass": "Work Pass (Employee)",
+    "emp_daily_pass": "Daily Pass",
+    "emp_temp_veh_pass": "Temporary Vehicle Pass",
+    "foreigner_visitor": "Visitor (Foreigner)",
+    "work_pass": "Work Pass",
+    "na": "Not Applicable"
+  };
+
   useEffect(() => {
     handlePageChange((currentPage - 1) * itemsPerPage);
   }, [currentPage]);
@@ -76,21 +86,17 @@ const Passes = ({ Pass, totalPass, isLoading, onActionClick, searchParams, setSe
             onChange={handleSearchChange}
             placeholder="Search by visitor name"
           />
-          <input
-            className="appearance-none border border-customGreen rounded-3xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-700"
-            type="text"
-            name="pass_type"
-            value={searchParams.pass_type}
+          <select
+            value={searchParams.pass_type || ""}
             onChange={handleSearchChange}
-            placeholder="Search by pass type"
-          />
-          <select
-            value={searchParams.limit}
-            onChange={handleLimitChange}
+            name="pass_type"
             className="border border-customGreen rounded-3xl bg-white py-2 px-3 text-gray-700 focus:outline-none"
           >
-            {[5, 10, 20, 30, 50].map(size => (
-              <option key={size} value={size}>{size} per page</option>
+            <option value="">Select</option>
+            {Object.keys(passTypes).map((key) => (
+              <option key={key} value={key}>
+                {passTypes[key]}
+              </option>
             ))}
           </select>
           <select
@@ -102,12 +108,6 @@ const Passes = ({ Pass, totalPass, isLoading, onActionClick, searchParams, setSe
               <option key={size} value={size}>{size} per page</option>
             ))}
           </select>
-        </div>  
-        <div className="flex space-x-3">
-          <button className="flex items-center bg-customGreen hover:bg-green-700 text-white py-1 px-4 rounded-3xl" onClick={() => { onActionClick('addNewPass'); handleClose(); }}>
-            <AddIcon className="h-4 w-5 mr-2" />
-            ADD NEW
-          </button>
         </div>
       </div>
       {isLoading ? (
