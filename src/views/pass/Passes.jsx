@@ -3,6 +3,7 @@ import { Box, IconButton, Menu, MenuItem, ListItemIcon, ListItemText } from "@mu
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
 import Alert from "../../components/alert/index.jsx";
 import CircularProgress from "@mui/material/CircularProgress";
 import Pagination from "../../components/pagination/index.jsx";
@@ -75,7 +76,7 @@ const Passes = ({ Pass, totalPass, isLoading, onActionClick, searchParams, setSe
   const isToday = (date) => {
     const today = new Date();
     const passedDate = new Date(date);
-    return passedDate.toISOString().split('T')[0] === today.toISOString().split('T')[0];  // Only comparing the date part
+    return passedDate.toISOString().split('T')[0] === today.toISOString().split('T')[0];
   };
 
   useEffect(() => {
@@ -203,6 +204,12 @@ const Passes = ({ Pass, totalPass, isLoading, onActionClick, searchParams, setSe
                             <VisibilityIcon fontSize="small" />
                           </ListItemIcon>
                           <ListItemText primary="View / Print Pass" />
+                        </MenuItem>
+                        <MenuItem onClick={() => { onActionClick('log', currentSelectedPass); handleClose(); }}>
+                          <ListItemIcon>
+                            <EditIcon fontSize="small" />
+                          </ListItemIcon>
+                          <ListItemText primary="Log Visit" />
                         </MenuItem>
                       </Menu>
                     </td>

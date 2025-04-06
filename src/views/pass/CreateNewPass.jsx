@@ -47,23 +47,34 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
         const { name, value } = e.target;
     
         let updatedValue = value;
-        
+
         if (name === "validity") {
-            if (value) {
-                const date = new Date(value);
-                if (!isNaN(date.getTime())) {
-                    updatedValue = `${value}T18:00`;
-                } else {
-                    updatedValue = '';
-                    setErrors({ ...errors, [name]: 'Invalid date format' });
-                }
+          if (value) {
+            const date = new Date(value);
+            if (!isNaN(date.getTime())) {
+              updatedValue = value; 
             } else {
-                updatedValue = '';
+              updatedValue = '';
+              setErrors((prevErrors) => ({
+                ...prevErrors,
+                [name]: 'Invalid date format',
+              }));
             }
+          } else {
+            updatedValue = '';
+          }
         }
-        setPassData({ ...passData, [name]: updatedValue });
-        setErrors({ ...errors, [name]: null });
-    };
+
+        setPassData((prevData) => ({
+          ...prevData,
+          [name]: updatedValue,
+        }));
+    
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: null,
+        }));
+      };
 
     const validate = () => {
         let newErrors = {};
@@ -97,6 +108,7 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
         if (!validate()) return;
         try {
             passData.pass_image = imageData;
+            passData.validity = `${passData.validity}T18:00`;
             const response = await fetch(`${url}/passes/pass-info/`, {
                 method: 'POST',
                 headers: {
@@ -115,24 +127,9 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
                 setPassData(initialValues);
                 handleClose();
             } else {
-                if (response.status === 409);
-                {
-                    const response = await fetch(`${url}/passes/view-last-registered-visitor/${passData?.key}`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${localStorage.getItem('token')}`,
-                        },
-                    });
-                    const json = await response.json();
-                    if (response.ok) {
-                        setPreviousVisitor(json);
-                        setIsConflict(true);
-                    } else {
-                        Notification.showErrorMessage('Try Again!', json.error);
-                    }
-                }
+                Notification.showErrorMessage('Errors', json);
             }
+            
         } catch (error) {
             Notification.showErrorMessage('Errors', 'Server error');
         }
@@ -226,7 +223,7 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
                             type="date"
                             id="validity"
                             name="validity"
-                            value={passData.validity}
+                            value={passData.validity || ''}
                             onChange={handleInputChange}
                             className={`border-2 p-3 rounded-lg ${errors.validity ? 'border-red-500' : 'border-gray-300'}`}
                         />

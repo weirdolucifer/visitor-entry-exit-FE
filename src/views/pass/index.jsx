@@ -6,14 +6,14 @@ import Notification from "../../components/notification/index.jsx";
 import Passes from './Passes.jsx';
 // import PassProfile from './PassProfile';
 // import UpdatePass from './UpdatePass';
-import CreateNewPass from '../pass/CreateNewPass';
+import CreateNewVisitLog from "../log/CreateNewVisitLog.jsx";
 
 const Pass = () => {
   const [selectedPass, setSelectedPass] = useState(null);
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [addNewPassModalOpen, setAddNewPassModalOpen] = useState(false);
-  const [createNewPassModalOpen, setCreateNewPassModalOpen] = useState(false);
+  const [createNewVisitLogModalOpen, setCreateNewVisitLogModalOpen] = useState(false);
 
   const handleActionClick = (action, Pass = null) => {
     if (Pass) setSelectedPass(Pass);
@@ -27,8 +27,8 @@ const Pass = () => {
       case 'addNewPass':
         setAddNewPassModalOpen(true);
         break;
-      case 'pass':
-        setCreateNewPassModalOpen(true);
+      case 'log':
+        setCreateNewVisitLogModalOpen(true);
         setViewModalOpen(false);
         break;
       default:
@@ -90,6 +90,7 @@ const Pass = () => {
           {/* <PassProfile open={viewModalOpen} onClose={() => setViewModalOpen(false)} Pass={selectedPass} onActionClick={handleActionClick} /> */}
           {/* <UpdatePass open={updateModalOpen} onClose={() => setUpdateModalOpen(false)} Pass={selectedPass} fetchData={fetchData} /> */}
           {/* <CreateNewPass open={createNewPassModalOpen} onClose={() => setCreateNewPassModalOpen(false)} Pass={selectedPass} fetchData={fetchData} /> */}
+          <CreateNewVisitLog open={createNewVisitLogModalOpen} onClose={() => setCreateNewVisitLogModalOpen(false)} pass={selectedPass} />
         </>
       )}
     </div>
