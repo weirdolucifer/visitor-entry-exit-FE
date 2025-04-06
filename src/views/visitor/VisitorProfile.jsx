@@ -92,7 +92,6 @@ const VisitorProfile = ({ open, onClose, visitor, onActionClick }) => {
               <InfoItem icon={<EmailIcon color="error" />} label="Email" value={visitor.email} />
               <InfoItem icon={<BadgeIcon color="info" />} label="Gov ID Type" value={visitor.gov_id_type.replace('_', ' ')} />
               <InfoItem icon={<VpnKeyIcon color="primary" />} label="Gov ID No" value={visitor.gov_id_no} />
-              <InfoItem icon={<BloodtypeIcon color="warning" />} label="Blood Group" value={visitor.blood_group} />
               <InfoItem icon={<BlockIcon color={visitor.is_blacklisted ? 'error' : 'success'} />} label="Blacklisted" value={visitor.is_blacklisted ? "Yes" : "No"} />
             </div>
           </div>

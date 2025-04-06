@@ -26,11 +26,6 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
     const [imageModalOpen, setImageModalOpen] = useState(false);
     const [imageData, setImageData] = useState('');
 
-    // useEffect(() => {
-    //     fetchKeyList();
-    //     fetchZoneList();
-    // }, [open]);
-
     useEffect(() => {
         setPassData(currentData => ({
             ...currentData,
@@ -38,14 +33,25 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
         }));
     }, [visitor]);
 
-    // const handleZoneChange = (newSelectedZones) => {
-    //     setPassData({ ...passData, zones_allowed: newSelectedZones });
-    //     setSelectedZones(newSelectedZones);
-    // };
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setPassData({ ...passData, [name]: value });
+    
+        let updatedValue = value;
+        
+        if (name === "validity") {
+            if (value) {
+                const date = new Date(value);
+                if (!isNaN(date.getTime())) {
+                    updatedValue = `${value}T18:00`;
+                } else {
+                    updatedValue = '';
+                    setErrors({ ...errors, [name]: 'Invalid date format' });
+                }
+            } else {
+                updatedValue = '';
+            }
+        }
+        setPassData({ ...passData, [name]: updatedValue });
         setErrors({ ...errors, [name]: null });
     };
 
@@ -207,10 +213,10 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
                             Valid Until
                         </label>
                         <input
-                            type="datetime-local"
+                            type="date"
                             id="validity"
                             name="validity"
-                            value={passData.validity}
+                            value={passData.validity ? passData.validity.split('T')[0] : ''}
                             onChange={handleInputChange}
                             className={`border-2 p-3 rounded-lg ${errors.validity ? 'border-red-500' : 'border-gray-300'}`}
                         />
