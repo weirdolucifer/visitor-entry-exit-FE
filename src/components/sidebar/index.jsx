@@ -1,18 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
-import modlogo from '../../assets/images/mod-logo.png';
-import becillogo from '../../assets/images/becil.png';
 import vmslogo from "../../assets/images/vms-logo.png";
 import MenuIcon from '@mui/icons-material/Menu';
-import SettingsIcon from '@mui/icons-material/Settings';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import BusinessIcon from '@mui/icons-material/Business';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import HistoryIcon from '@mui/icons-material/History';
-import AssessmentIcon from '@mui/icons-material/Assessment';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 
 
@@ -23,16 +19,14 @@ const navItemsAdmin = [
   { name: 'Department', icon: <BusinessIcon />, path: '/dept' },
   { name: 'Passes', icon: <CardTravelIcon />, path: '/pass' },
   { name: 'Visit Logs', icon: <HistoryIcon />, path: '/log' },
-  { name: 'Reports', icon: <AssessmentIcon />, path: '/report' },
   { name: 'FAQ', icon: <LiveHelpIcon />, path: '/faq' },
-  { name: 'Configure', icon: <SettingsIcon />, path: '/configure' },
 ];
 
 const navItemsReceptionist = [
   { name: 'Dashboard', icon: <HomeOutlinedIcon />, path: '/' },
   { name: 'Visitors', icon: <PeopleOutlinedIcon />, path: '/visitor' },
   { name: 'Passes', icon: <CardTravelIcon />, path: '/pass' },
-  { name: 'Reports', icon: <AssessmentIcon />, path: '/report' },
+  { name: 'Visit Logs', icon: <HistoryIcon />, path: '/log' },
   { name: 'FAQ', icon: <LiveHelpIcon />, path: '/faq' },
 ];
 

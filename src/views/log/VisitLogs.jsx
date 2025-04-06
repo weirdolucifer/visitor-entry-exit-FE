@@ -108,6 +108,12 @@ const VisitLogs = ({ VisitLog, totalVisitLog, isLoading, onActionClick, searchPa
     "na": "Not Applicable"
   };
 
+  const isToday = (date) => {
+    const today = new Date();
+    const passedDate = new Date(date);
+    return passedDate.toISOString().split('T')[0] === today.toISOString().split('T')[0];
+  };
+
   useEffect(() => {
     handlePageChange((currentPage - 1) * itemsPerPage);
   }, [currentPage]);
@@ -324,58 +330,63 @@ const VisitLogs = ({ VisitLog, totalVisitLog, isLoading, onActionClick, searchPa
                   </tr>
               </thead>
               <tbody>
-                  {VisitLog.map((visitlog, index) => (
-                      <tr key={index} className="hover:bg-grey-lighter cursor-pointer">
-                          <td className="py-1 px-1 border-b border-grey-light">
-                              <div className="flex justify-center">
-                                  <div className="inline-block h-16 w-16 border-2 border-gray-300 rounded-full overflow-hidden bg-customGreen">
-                                      {visitlog.visitor_image ? (
-                                          <img src={`data:image/jpeg;base64,${visitlog.visitor_image}`} alt="Visitor Image" />
-                                      ) : (
-                                          <div className="h-full w-full flex items-center justify-center text-white bg-customGreen">
-                                              {visitlog.visitor_image ? visitlog.visitor_name.charAt(0).toUpperCase() : 'N/A'}
-                                          </div>
-                                      )}
-                                  </div>
+                {VisitLog.map((visitlog, index) => {
+                  const rowClass = isToday(visitlog.in_datetime) ? "bg-yellow-200" : "";
+
+                  return (
+                    <tr key={index} className={`hover:bg-grey-lighter cursor-pointer ${rowClass}`}>
+                      <td className="py-1 px-1 border-b border-grey-light">
+                        <div className="flex justify-center">
+                          <div className="inline-block h-16 w-16 border-2 border-gray-300 rounded-full overflow-hidden bg-customGreen">
+                            {visitlog.visitor_image ? (
+                              <img src={`data:image/jpeg;base64,${visitlog.visitor_image}`} alt="Visitor Image" />
+                            ) : (
+                              <div className="h-full w-full flex items-center justify-center text-white bg-customGreen">
+                                {visitlog.visitor_name ? visitlog.visitor_name.charAt(0).toUpperCase() : 'N/A'}
                               </div>
-                          </td>
-                          <td className="py-4 px-6 border-b border-grey-light">{visitlog.visitor_name || visitlog.employee_name}</td>
-                          <td className="py-4 px-6 border-b border-grey-light">{visitlog.pass_id}</td>
-                          <td className="py-4 px-6 border-b border-grey-light">{passTypes[visitlog.pass_type] || visitlog.pass_type} </td>
-                          <td className="py-4 px-6 border-b border-grey-light">
-                              {new Date(visitlog.in_datetime).toLocaleString('en-IN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
-                          </td>
-                          <td className="py-4 px-6 border-b border-grey-light">
-                              {new Date(visitlog.out_datetime).toLocaleString('en-IN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
-                          </td>
-                          <td className="py-4 px-6 border-b border-grey-light">{visitlog.purpose_of_visit}</td>
-                          <td className="py-4 px-6 border-b border-grey-light">
-                              <IconButton
-                                  aria-label="more"
-                                  aria-controls="long-menu"
-                                  aria-haspopup="true"
-                                  onClick={(event) => handleClick(event, visitlog)}
-                              >
-                                  <MoreVertIcon />
-                              </IconButton>
-                              <Menu
-                                  id="long-menu"
-                                  anchorEl={anchorEl}
-                                  keepMounted
-                                  open={Boolean(anchorEl)}
-                                  onClose={handleClose}
-                              >
-                                  <MenuItem onClick={() => { onActionClick('view', currentSelectedVisitLog); setShowViewVisitLog(true); handleClose(); }}>
-                                  <ListItemIcon>
-                                      <VisibilityIcon fontSize="small" />
-                                  </ListItemIcon>
-                                  <ListItemText primary="View Visit Details" />
-                                  </MenuItem>
-                              </Menu>
-                          </td>
-                      </tr>
-                  ))}
-              </tbody>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-4 px-6 border-b border-grey-light">{visitlog.visitor_name || visitlog.employee_name}</td>
+                      <td className="py-4 px-6 border-b border-grey-light">{visitlog.pass_id}</td>
+                      <td className="py-4 px-6 border-b border-grey-light">{passTypes[visitlog.pass_type] || visitlog.pass_type}</td>
+                      <td className="py-4 px-6 border-b border-grey-light">
+                        {new Date(visitlog.in_datetime).toLocaleString('en-IN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
+                      </td>
+                      <td className="py-4 px-6 border-b border-grey-light">
+                        {new Date(visitlog.out_datetime).toLocaleString('en-IN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
+                      </td>
+                      <td className="py-4 px-6 border-b border-grey-light">{visitlog.purpose_of_visit}</td>
+                      <td className="py-4 px-6 border-b border-grey-light">
+                        <IconButton
+                          aria-label="more"
+                          aria-controls="long-menu"
+                          aria-haspopup="true"
+                          onClick={(event) => handleClick(event, visitlog)}
+                        >
+                          <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                          id="long-menu"
+                          anchorEl={anchorEl}
+                          keepMounted
+                          open={Boolean(anchorEl)}
+                          onClose={handleClose}
+                        >
+                          <MenuItem onClick={() => { onActionClick('view', currentSelectedVisitLog); setShowViewVisitLog(true); handleClose(); }}>
+                            <ListItemIcon>
+                              <VisibilityIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText primary="View Visit Details" />
+                          </MenuItem>
+                        </Menu>
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+
           </table>
           <Pagination currentPage={currentPage} totalPages={totalPages} paginate={setCurrentPage} />
         </div>) : (

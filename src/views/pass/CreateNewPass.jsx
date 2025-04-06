@@ -33,6 +33,16 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
         }));
     }, [visitor]);
 
+    useEffect(() => {
+        if (!passData.validity) {
+            const currentDate = new Date().toISOString().split('T')[0];
+            setPassData((prevData) => ({
+                ...prevData,
+                validity: currentDate,
+            }));
+        }
+    }, [passData.validity]);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
     
@@ -216,7 +226,7 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
                             type="date"
                             id="validity"
                             name="validity"
-                            value={passData.validity ? passData.validity.split('T')[0] : ''}
+                            value={passData.validity}
                             onChange={handleInputChange}
                             className={`border-2 p-3 rounded-lg ${errors.validity ? 'border-red-500' : 'border-gray-300'}`}
                         />

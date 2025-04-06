@@ -46,7 +46,8 @@ const Pass = () => {
     visitor_name: '',
     visitor_id: '',
     offset: 0,
-    limit: 10
+    limit: 10,
+    active: true,
   });
 
 

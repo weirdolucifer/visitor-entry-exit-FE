@@ -11,10 +11,8 @@ import User from "./views/user";
 import Visitor from "./views/visitor";
 import Pass from "./views/pass";
 import VisitLog from "./views/log";
-import Configure from "./views/configure";
-import Guard from "./views/guard";
 import Faq from "./views/auth/Faq";
-import Report from "./views/report";
+
 function App() {
   return (
     <BrowserRouter>
@@ -39,8 +37,6 @@ function Content() {
 
       if (!token) {
         navigate("/login");
-      } else if (type === "Guard") {
-        navigate("/");
       }
     };
 
@@ -52,8 +48,6 @@ function Content() {
 
   const renderRoutes = () => {
     switch (userType) {
-      case 'Guard':
-        return <Route path="/" element={<Guard />} />;
       case 'Receptionist':
         return (
           <>
@@ -73,8 +67,6 @@ function Content() {
             <Route path="/faq" element={<Faq />} />
             <Route path="/pass" element={<Pass />} />
             <Route path="/log" element={<VisitLog />} />
-            <Route path="/report" element={<Report />} />
-            <Route path="/configure" element={<Configure />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </>
         );
@@ -84,7 +76,7 @@ function Content() {
   return isAuthenticated ? (
     <div style={{ backgroundColor: "#f4f4f4" }}>
       <div className="flex h-screen">
-        {userType !== 'Guard' && <Sidebar />}
+        <Sidebar />
         <div className="flex-1 flex flex-col">
           <Topbar />
           <div className="overflow-auto">

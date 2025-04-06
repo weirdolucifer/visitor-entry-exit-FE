@@ -40,13 +40,17 @@ const Passes = ({ Pass, totalPass, isLoading, onActionClick, searchParams, setSe
     setShowDeleteAlert(false);
     // Perform delete action
   };
-
   const handleSearchChange = (event) => {
     const { name, value } = event.target;
     const newName = `${name}`;
-    setSearchParams({ ...searchParams, [newName]: value });
+    if (newName === 'active' && value === '') {
+        const { active, ...rest } = searchParams;
+        setSearchParams(rest);
+    } else {
+        setSearchParams({ ...searchParams, [newName]: value });
+    }
     setCurrentPage(1);
-  };
+};
 
   const handleLimitChange = (event) => {
     setSearchParams({ ...searchParams, limit: event.target.value, offset: 0 });
@@ -66,6 +70,12 @@ const Passes = ({ Pass, totalPass, isLoading, onActionClick, searchParams, setSe
     "foreigner_visitor": "Visitor (Foreigner)",
     "work_pass": "Work Pass",
     "na": "Not Applicable"
+  };
+
+  const isToday = (date) => {
+    const today = new Date();
+    const passedDate = new Date(date);
+    return passedDate.toISOString().split('T')[0] === today.toISOString().split('T')[0];  // Only comparing the date part
   };
 
   useEffect(() => {
@@ -92,12 +102,23 @@ const Passes = ({ Pass, totalPass, isLoading, onActionClick, searchParams, setSe
             name="pass_type"
             className="border border-customGreen rounded-3xl bg-white py-2 px-3 text-gray-700 focus:outline-none"
           >
-            <option value="">Select</option>
+            <option value="">Select Pass Type</option>
             {Object.keys(passTypes).map((key) => (
               <option key={key} value={key}>
                 {passTypes[key]}
               </option>
             ))}
+          </select>
+
+          <select
+            value={searchParams.active || ""}
+            onChange={handleSearchChange}
+            name="active"
+            className="border border-customGreen rounded-3xl bg-white py-2 px-3 text-gray-700 focus:outline-none"
+          >
+            <option key="active" value="true">Active</option>
+            <option key="active" value="false">Expired</option>
+            <option key="" value="">All</option>
           </select>
           <select
             value={searchParams.limit}
@@ -136,55 +157,58 @@ const Passes = ({ Pass, totalPass, isLoading, onActionClick, searchParams, setSe
                       <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Actions</th>
                   </tr>
               </thead>
-              <tbody>
-                  {Pass.map((pass, index) => (
-                      <tr key={index} className="hover:bg-grey-lighter cursor-pointer">
-                          <td className="py-1 px-1 border-b border-grey-light">
-                              <div className="flex justify-center">
-                                  <div className="inline-block h-16 w-16 border-2 border-gray-300 rounded-full overflow-hidden bg-customGreen">
-                                      {pass.visitor_image ? (
-                                          <img src={`data:image/jpeg;base64,${pass.visitor_image}`} alt="Visitor Image" />
-                                      ) : (
-                                          <div className="h-full w-full flex items-center justify-center text-white bg-customGreen">
-                                              {pass.visitor_image ? pass.visitor_name.charAt(0).toUpperCase() : 'N/A'}
-                                          </div>
-                                      )}
-                                  </div>
-                              </div>
-                          </td>
-                          <td className="py-4 px-6 border-b border-grey-light">{pass.visitor_name || pass.employee_name}</td>
-                          <td className="py-4 px-6 border-b border-grey-light">{pass.id}</td>
-                          <td className="py-4 px-6 border-b border-grey-light">{passTypes[pass.pass_type] || pass.pass_type}</td>
-                          <td className="py-4 px-6 border-b border-grey-light">{pass.local_pass_id}</td>
-                          <td className="py-4 px-6 border-b border-grey-light">
-                              {new Date(pass.validity).toLocaleString('en-IN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
-                          </td>
-                          <td className="py-4 px-6 border-b border-grey-light">
-                              <IconButton
-                                  aria-label="more"
-                                  aria-controls="long-menu"
-                                  aria-haspopup="true"
-                                  onClick={(event) => handleClick(event, pass)}
-                              >
-                                  <MoreVertIcon />
-                              </IconButton>
-                              <Menu
-                                  id="long-menu"
-                                  anchorEl={anchorEl}
-                                  keepMounted
-                                  open={Boolean(anchorEl)}
-                                  onClose={handleClose}
-                              >
-                                  <MenuItem onClick={() => { onActionClick('view', currentSelectedPass); setShowViewPass(true); handleClose(); }}>
-                                  <ListItemIcon>
-                                      <VisibilityIcon fontSize="small" />
-                                  </ListItemIcon>
-                                  <ListItemText primary="View / Print Pass" />
-                                  </MenuItem>
-                              </Menu>
-                          </td>
-                      </tr>
-                  ))}
+              <tbody>{Pass.map((pass, index) => {
+                const rowClass = isToday(pass.validity) ? "bg-yellow-200" : "";
+
+                return (
+                  <tr key={index} className={`hover:bg-grey-lighter cursor-pointer ${rowClass}`}>
+                    <td className="py-1 px-1 border-b border-grey-light">
+                      <div className="flex justify-center">
+                        <div className="inline-block h-16 w-16 border-2 border-gray-300 rounded-full overflow-hidden bg-customGreen">
+                          {pass.visitor_image ? (
+                            <img src={`data:image/jpeg;base64,${pass.visitor_image}`} alt="Visitor Image" />
+                          ) : (
+                            <div className="h-full w-full flex items-center justify-center text-white bg-customGreen">
+                              {pass.visitor_name ? pass.visitor_name.charAt(0).toUpperCase() : 'N/A'}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6 border-b border-grey-light">{pass.visitor_name || pass.employee_name}</td>
+                    <td className="py-4 px-6 border-b border-grey-light">{pass.id}</td>
+                    <td className="py-4 px-6 border-b border-grey-light">{passTypes[pass.pass_type] || pass.pass_type}</td>
+                    <td className="py-4 px-6 border-b border-grey-light">{pass.local_pass_id}</td>
+                    <td className="py-4 px-6 border-b border-grey-light">
+                      {new Date(pass.validity).toLocaleString('en-IN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
+                    </td>
+                    <td className="py-4 px-6 border-b border-grey-light">
+                      <IconButton
+                        aria-label="more"
+                        aria-controls="long-menu"
+                        aria-haspopup="true"
+                        onClick={(event) => handleClick(event, pass)}
+                      >
+                        <MoreVertIcon />
+                      </IconButton>
+                      <Menu
+                        id="long-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                      >
+                        <MenuItem onClick={() => { onActionClick('view', currentSelectedPass); setShowViewPass(true); handleClose(); }}>
+                          <ListItemIcon>
+                            <VisibilityIcon fontSize="small" />
+                          </ListItemIcon>
+                          <ListItemText primary="View / Print Pass" />
+                        </MenuItem>
+                      </Menu>
+                    </td>
+                  </tr>
+                );
+              })}
               </tbody>
           </table>
           <Pagination currentPage={currentPage} totalPages={totalPages} paginate={setCurrentPage} />

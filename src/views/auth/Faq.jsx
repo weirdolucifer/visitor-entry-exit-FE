@@ -40,23 +40,19 @@ const Faq = () => {
 
 const questions = [
   {
-    title: "How to Create an Appointment",
-    answer: "Click on the 'create appointment' button from the sidebar or the dashboard, then fill in the details and click on the create button.",
-  },
-  {
     title: "How to Add a new Visitor",
-    answer: "Click on the 'add new visitor' button, then take or select a picture. If there are multiple pictures, fill in the details and finally submit after signature.",
+    answer: "Click on the 'add new visitor' button, then take or select a picture. Fill in the details and finally submit after signature.",
   },
   {
     title: "How to Generate a Pass",
-    answer: "You can generate a pass directly from the visitor table by filling the details, or by choosing from the face recognition table.",
+    answer: "You can generate a pass directly from the visitor table by filling the details.",
   },
   {
     title: "How to Add an Employee",
     answer: "By clicking on the 'add employee' button from the sidebar and filling in the details in the form.",
   },
   {
-    title: "How Can We See Visitors/Passes/Appointments/Employees",
+    title: "How Can We See Visitors/Passes/Visit Logs/Employees/Departments",
     answer: "We can easily see all details listing from the sidebar.",
   },
 ];
