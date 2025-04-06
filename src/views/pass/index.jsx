@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { url } from "../../utils/Constants.jsx";
 import Notification from "../../components/notification/index.jsx";
 
-import Passes from './Visitors';
+import Passes from './Passes.jsx';
 // import PassProfile from './PassProfile';
 // import UpdatePass from './UpdatePass';
 import CreateNewPass from '../pass/CreateNewPass';

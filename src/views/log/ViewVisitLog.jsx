@@ -52,8 +52,8 @@ const ViewVisitLog = ({ open, onClose, visitlogData }) => {
                             <div className="w-full p-2">
                                 <InfoItem label="In Time" value={new Date(visitlogData?.in_datetime).toLocaleString('en-IN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })} />
                                 <InfoItem label="Out Time" value={new Date(visitlogData?.out_datetime).toLocaleString('en-IN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })} />
-                                <InfoItem label="Whom to Visit / Visiting Department" value={visitlogData?.whom_to_visit || visitlogData?.visiting_department || 'N/A'} />
-                                <InfoItem label="Escorted By" value={visitlogData?.escorted_by || 'N/A'} />
+                                <InfoItem label="Whom to Visit / Visiting Department" value={visitlogData?.whom_to_visit_name || visitlogData?.visiting_department_name || 'N/A'} />
+                                <InfoItem label="Escorted By" value={visitlogData?.escorted_by_name || 'N/A'} />
                             </div>
                         </div>
                     </div>

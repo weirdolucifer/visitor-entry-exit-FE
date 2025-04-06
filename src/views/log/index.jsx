@@ -90,7 +90,7 @@ const VisitLog = () => {
         <>
           {/* <VisitLogProfile open={viewModalOpen} onClose={() => setViewModalOpen(false)} VisitLog={selectedVisitLog} onActionClick={handleActionClick} /> */}
           {/* <UpdateVisitLog open={updateModalOpen} onClose={() => setUpdateModalOpen(false)} VisitLog={selectedVisitLog} fetchData={fetchData} /> */}
-          <CreateNewVisitLog open={createNewVisitLogModalOpen} onClose={() => setCreateNewVisitLogModalOpen(false)} VisitLog={selectedVisitLog} fetchData={fetchData} />
+          {/* <CreateNewVisitLog open={createNewVisitLogModalOpen} onClose={() => setCreateNewVisitLogModalOpen(false)} VisitLog={selectedVisitLog} fetchData={fetchData} /> */}
         </>
       )}
     </div>
