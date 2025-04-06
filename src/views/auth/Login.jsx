@@ -80,11 +80,9 @@ const Login = () => {
           <img src={modlogo} alt="Ministry of Defence" className="h-26" />
         </div>
         <div className="flex justify-center mb-1 text-white text-lg md:text-xl">
-          {/* Ministry Of Defence, India */}
           Visitor Management System
         </div>
         <div className="flex justify-center mb-4 text-white text-lg md:text-xl">
-          {/* रक्षा मंत्रालय, भारत */}
           विज़िटर प्रबंधन प्रणाली
         </div>
         <div className="mb-4">

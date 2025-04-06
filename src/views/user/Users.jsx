@@ -88,7 +88,7 @@ const Users = ({ users, isLoading, onActionClick }) => {
             onClick={() => onActionClick('addNewUser')}
           >
             <AddIcon className="h-4 w-5 mr-2" />
-            ADD NEW
+            Add New
         </button>
       </div>
       {isLoading ? (

@@ -3,9 +3,18 @@ import Dialog from '@mui/material/Dialog';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import PrintIcon from '@mui/icons-material/Print';
-import passlogo from '../../assets/images/passlogo.png';
+import passlogo from '../../assets/images/pass-logo.png';
 
-
+const passTypes = {
+    "visitor": "Visitor",
+    "emp_work_pass": "Work Pass (Employee)",
+    "emp_daily_pass": "Daily Pass",
+    "emp_temp_veh_pass": "Temporary Vehicle Pass",
+    "foreigner_visitor": "Visitor (Foreigner)",
+    "work_pass": "Work Pass",
+    "na": "Not Applicable"
+  };
+  
 const ViewPass = ({ open, onClose, passData }) => {
 
     const handlePrint = () => {
@@ -28,7 +37,7 @@ const ViewPass = ({ open, onClose, passData }) => {
                 </div>
                 <div className="col-span-1 p-2 border-r-2 border-gray-300">
                     <div className='flex flex-col items-center space-y-4 pb-2'>
-                        <img src={passlogo} alt="Pass Logo" className="h-16 w-32" />
+                        <img src={passlogo} alt="Pass Logo" className="h-16" />
                         {passData?.visitor_image ? (
                             <img src={`data:image/jpeg;base64,${passData?.visitor_image}`} alt="Pass" className="h-32 w-32 border-2 border-gray-300 rounded-xl object-cover" />
                         ) : (
@@ -41,13 +50,13 @@ const ViewPass = ({ open, onClose, passData }) => {
                 <div className="col-span-2 flex flex-col space-y-4">
                     <div className='p-2'>
                         <div className="flex justify-center p-2">
-                            <h1 className="text-xl font-bold">Temporary Entry Pass</h1>
+                            <h1 className="text-xl font-bold">Entry Pass</h1>
                         </div>
                         <div className="flex">
                             <div className="flex-1 flex flex-col space-y-4 p-2">
                                 <InfoItem label="Name" value={`${passData?.visitor_name || passData.employee_name}`} />
-                                <InfoItem label="Type" value={passData.pass_type} />
-                                <InfoItem label="Pass ID" value={passData?.local_pass_id} />
+                                <InfoItem label="Type" value={passTypes[passData.pass_type]} />
+                                <InfoItem label="Local Pass No." value={passData?.local_pass_id} />
                             </div>
                         </div>
                         <div className="flex justify-left p-2">

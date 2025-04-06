@@ -107,7 +107,7 @@ const Visitors = ({ visitors, totalVisitors, isLoading, onActionClick, searchPar
         <div className="flex space-x-3">
           <button className="flex items-center bg-customGreen hover:bg-green-700 text-white py-1 px-4 rounded-3xl" onClick={() => { onActionClick('addNewVisitor'); handleClose(); }}>
             <AddIcon className="h-4 w-5 mr-2" />
-            ADD NEW
+            Add New
           </button>
         </div>
       </div>

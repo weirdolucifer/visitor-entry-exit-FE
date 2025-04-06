@@ -100,10 +100,6 @@ const Profile = ({ open, onClose }) => {
             </div>
           </div>
         </div>
-        <ResetPassword
-          open={resetPasswordModalOpen}
-          onClose={() => setResetPasswordModalOpen(false)}
-        />
       </Paper>
     </Dialog>
   );

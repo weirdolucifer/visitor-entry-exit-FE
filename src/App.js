@@ -10,6 +10,7 @@ import Dashboard from "./views/dashboard/Dashboard";
 import User from "./views/user";
 import Visitor from "./views/visitor";
 import Pass from "./views/pass";
+import VisitLog from "./views/log";
 import Configure from "./views/configure";
 import Guard from "./views/guard";
 import Faq from "./views/auth/Faq";
@@ -71,6 +72,7 @@ function Content() {
             <Route path="/visitor" element={<Visitor />} />
             <Route path="/faq" element={<Faq />} />
             <Route path="/pass" element={<Pass />} />
+            <Route path="/log" element={<VisitLog />} />
             <Route path="/report" element={<Report />} />
             <Route path="/configure" element={<Configure />} />
             <Route path="*" element={<Navigate to="/" replace />} />

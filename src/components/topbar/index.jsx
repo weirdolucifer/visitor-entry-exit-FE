@@ -40,6 +40,12 @@ const Topbar = () => {
   let username = localStorage.getItem("user_name");
   let userimage = localStorage.getItem("image");
 
+  const capitalizeFirstLetter = (str) => {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+  const capitalizedUsername = capitalizeFirstLetter(username);
+
   useEffect(() => {
     username = localStorage.getItem("user_name");
     userimage = localStorage.getItem("image");
@@ -50,31 +56,15 @@ const Topbar = () => {
       <div className="flex justify-between items-center bg-gray-100 p-4 shadow-md">
         {/* <img src={essilogo} alt="MOD Logo" className="h-12" /> */}
         <div class="h-full flex items-center font-bold text-xl">
-          VISITOR MANAGEMENT SYSTEM
+          Visitor Management System
         </div>
 
         {localStorage.getItem("token") && (
           <div className="flex items-center space-x-2">
             <div
-              className="flex items-center space-x-2 bg-customGreen rounded-full p-1 transform scale-90 shadow-md min-w-[130px]"
-              onClick={() => setProfileModalOpen(true)}
+              className="flex items-center space-x-2 bg-customGreen rounded-full p-1 transform scale-90 shadow-md min-w-[150px]"
             >
-              <div className="w-8 h-8 border-2 border-gray-300 rounded-full overflow-hidden bg-customGreen flex justify-center items-center">
-                {userimage != "null" ? (
-                  <img
-                    src={`data:image/jpeg;base64,${localStorage.getItem(
-                      "image"
-                    )}`}
-                    alt="User"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-white">
-                    {username ? username.charAt(0).toUpperCase() : "N"}
-                  </span>
-                )}
-              </div>
-              <span className="text-white p-1">{username}</span>
+              <span className="text-white p-1 mx-2">Welcome {capitalizedUsername}</span>
             </div>
 
             <button
@@ -86,11 +76,6 @@ const Topbar = () => {
           </div>
         )}
       </div>
-
-      <Profile
-        open={profileModalOpen}
-        onClose={() => setProfileModalOpen(false)}
-      />
     </>
   );
 };

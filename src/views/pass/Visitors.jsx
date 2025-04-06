@@ -129,8 +129,9 @@ const Passes = ({ Pass, totalPass, isLoading, onActionClick, searchParams, setSe
                   <tr>
                       <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light text-center">Profile</th>
                       <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Visitor/Employee Name</th>
+                      <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Pass No.</th>
                       <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Pass Type</th>
-                      <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Local Pass ID</th>
+                      <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Local Pass No.</th>
                       <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Validity</th>
                       <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Actions</th>
                   </tr>
@@ -152,7 +153,8 @@ const Passes = ({ Pass, totalPass, isLoading, onActionClick, searchParams, setSe
                               </div>
                           </td>
                           <td className="py-4 px-6 border-b border-grey-light">{pass.visitor_name || pass.employee_name}</td>
-                          <td className="py-4 px-6 border-b border-grey-light">{pass.pass_type}</td>
+                          <td className="py-4 px-6 border-b border-grey-light">{pass.id}</td>
+                          <td className="py-4 px-6 border-b border-grey-light">{passTypes[pass.pass_type] || pass.pass_type}</td>
                           <td className="py-4 px-6 border-b border-grey-light">{pass.local_pass_id}</td>
                           <td className="py-4 px-6 border-b border-grey-light">
                               {new Date(pass.validity).toLocaleString('en-IN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
@@ -177,7 +179,7 @@ const Passes = ({ Pass, totalPass, isLoading, onActionClick, searchParams, setSe
                                   <ListItemIcon>
                                       <VisibilityIcon fontSize="small" />
                                   </ListItemIcon>
-                                  <ListItemText primary="View/Print Pass" />
+                                  <ListItemText primary="View / Print Pass" />
                                   </MenuItem>
                               </Menu>
                           </td>

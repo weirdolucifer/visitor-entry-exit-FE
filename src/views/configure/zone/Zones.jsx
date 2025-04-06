@@ -143,7 +143,7 @@ const Zones = () => {
                 </div>
                 <button className="flex items-center bg-customGreen hover:bg-green-700 text-white py-1 px-4 rounded-3xl" onClick={() => onActionClick('addNewZone')}>
                     <AddIcon className="h-4 w-5 mr-2" />
-                    ADD NEW
+                    Add New
                 </button>
             </div>
             {isLoading ? (

@@ -4,32 +4,36 @@ import { UserContext } from '../../context/UserContext';
 import modlogo from '../../assets/images/mod-logo.png';
 import becillogo from '../../assets/images/becil.png';
 import vmslogo from "../../assets/images/vms-logo.png";
-import ForumIcon from '@mui/icons-material/Forum';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import ReceiptIcon from '@mui/icons-material/Receipt';
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ListIcon from '@mui/icons-material/List';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsIcon from '@mui/icons-material/Settings';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import BusinessIcon from '@mui/icons-material/Business';
+import CardTravelIcon from '@mui/icons-material/CardTravel';
+import HistoryIcon from '@mui/icons-material/History';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import LiveHelpIcon from '@mui/icons-material/LiveHelp';
+
 
 const navItemsAdmin = [
   { name: 'Dashboard', icon: <HomeOutlinedIcon />, path: '/' },
   { name: 'Visitors', icon: <PeopleOutlinedIcon />, path: '/visitor' },
-  { name: 'Employees', icon: <ListIcon />, path: '/user' },
-  { name: 'Department', icon: <ListIcon />, path: '/dept' },    // need to define api
-  { name: 'Passes', icon: <CreditCardIcon />, path: '/pass' },
-  { name: 'Reports', icon: <ReceiptIcon />, path: '/report' },
-  { name: 'FAQ', icon: <ForumIcon />, path: '/faq' },
+  { name: 'Employees', icon: <SupervisorAccountIcon />, path: '/user' },
+  { name: 'Department', icon: <BusinessIcon />, path: '/dept' },
+  { name: 'Passes', icon: <CardTravelIcon />, path: '/pass' },
+  { name: 'Visit Logs', icon: <HistoryIcon />, path: '/log' },
+  { name: 'Reports', icon: <AssessmentIcon />, path: '/report' },
+  { name: 'FAQ', icon: <LiveHelpIcon />, path: '/faq' },
   { name: 'Configure', icon: <SettingsIcon />, path: '/configure' },
 ];
 
 const navItemsReceptionist = [
   { name: 'Dashboard', icon: <HomeOutlinedIcon />, path: '/' },
   { name: 'Visitors', icon: <PeopleOutlinedIcon />, path: '/visitor' },
-  { name: 'Passes', icon: <CreditCardIcon />, path: '/pass' },
-  { name: 'Reports', icon: <ReceiptIcon />, path: '/report' },
-  { name: 'FAQ', icon: <ForumIcon />, path: '/faq' },
+  { name: 'Passes', icon: <CardTravelIcon />, path: '/pass' },
+  { name: 'Reports', icon: <AssessmentIcon />, path: '/report' },
+  { name: 'FAQ', icon: <LiveHelpIcon />, path: '/faq' },
 ];
 
 const SideBar = () => {
