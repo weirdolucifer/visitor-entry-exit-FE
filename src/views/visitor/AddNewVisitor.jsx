@@ -206,9 +206,10 @@ const AddNewVisitor = ({ open, onClose, fetchData, onActionClick }) => {
               onChange={handleInputChange}
             >
               <option value="">Select Visitor Type</option>
-              <option value="civilian">civilian</option>
-              <option value="internal">internal</option>
-              <option value="gov agency">gov agency</option>
+              <option value="civilian">Civilian</option>
+              <option value="internal">Internal</option>
+              <option value="foreigner">Foreigner</option>
+              <option value="gov agency">Gov Agency</option>
             </select>
             {errors.visitor_type && <div className="text-red-500 text-xs">{errors.visitor_type}</div>}
 

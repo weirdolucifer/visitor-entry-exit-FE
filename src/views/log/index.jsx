@@ -4,15 +4,51 @@ import { url } from "../../utils/Constants.jsx";
 import Notification from "../../components/notification/index.jsx";
 
 import VisitLogs from './VisitLogs';
-// import VisitLogProfile from './VisitLogProfile';
-// import UpdateVisitLog from './UpdateVisitLog';
 
 const VisitLog = () => {
   const [selectedVisitLog, setSelectedVisitLog] = useState(null);
   const [viewModalOpen, setViewModalOpen] = useState(false);
-  const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  const [addNewVisitLogModalOpen, setAddNewVisitLogModalOpen] = useState(false);
-  const [createNewVisitLogModalOpen, setCreateNewVisitLogModalOpen] = useState(false);
+
+  const handleOutTimeUpdate = async (visitLog) => {
+    if (visitLog.out_datetime) {
+      Notification.showErrorMessage("Already Updated", "Out time already exists for this log.");
+      return;
+    }
+
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so add 1 and pad
+    const day = String(now.getDate()).padStart(2, '0'); // Pad single digits
+    const hours = String(now.getHours()).padStart(2, '0'); // Pad single digits
+    const minutes = String(now.getMinutes()).padStart(2, '0'); // Pad single digits
+    const seconds = String(now.getSeconds()).padStart(2, '0'); // Pad single digits
+    const currentTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  
+    try {
+      const response = await fetch(`${url}/passes/visit-log/${visitLog.id}/`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          out_datetime: currentTime,
+        }),
+      });
+  
+      const json = await response.json();
+  
+      if (response.ok) {
+        Notification.showSuccessMessage("Success", "Out time updated successfully.");
+        fetchData(); // Refresh list
+      } else {
+        Notification.showErrorMessage("Update Failed", json?.error || "Unable to update out time.");
+      }
+    } catch (err) {
+      Notification.showErrorMessage("Error", "Server error while updating out time.");
+    }
+  };
+  
 
   const handleActionClick = (action, VisitLog = null) => {
     if (VisitLog) setSelectedVisitLog(VisitLog);
@@ -21,14 +57,7 @@ const VisitLog = () => {
         setViewModalOpen(true);
         break;
       case 'update':
-        setUpdateModalOpen(true);
-        break;
-      case 'addNewVisitLog':
-        setAddNewVisitLogModalOpen(true);
-        break;
-      case 'pass':
-        setCreateNewVisitLogModalOpen(true);
-        setViewModalOpen(false);
+        handleOutTimeUpdate(VisitLog);
         break;
       default:
         console.log("Unhandled action:", action);

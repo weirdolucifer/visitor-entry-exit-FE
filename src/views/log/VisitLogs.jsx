@@ -60,17 +60,17 @@ const VisitLogs = ({ VisitLog, totalVisitLog, isLoading, onActionClick, searchPa
     }
   };
 
-  const handleClick = (event, VisitLog) => {
+  const handleClick = (event, visitLog) => {
     setAnchorEl(event.currentTarget);
-    setCurrentSelectedVisitLog(VisitLog);
+    setCurrentSelectedVisitLog(visitLog);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleDelete = (VisitLog) => {
-    setCurrentSelectedVisitLog(VisitLog);
+  const handleDelete = (visitLog) => {
+    setCurrentSelectedVisitLog(visitLog);
     setShowDeleteAlert(true);
     handleClose();
   };
@@ -218,7 +218,7 @@ const VisitLogs = ({ VisitLog, totalVisitLog, isLoading, onActionClick, searchPa
               htmlFor="out_date"
               className="text-sm font-medium text-gray-700 mb-2 ml-4"
             >
-              &lt;= Out Date
+              &lt; Out Date
             </label>
             <input
               type="date"
@@ -333,6 +333,7 @@ const VisitLogs = ({ VisitLog, totalVisitLog, isLoading, onActionClick, searchPa
               <tbody>
                 {VisitLog.map((visitlog, index) => {
                   const rowClass = isToday(visitlog.in_datetime) ? "bg-yellow-200" : "";
+                  const shouldShowExitLogMenu = !visitlog.out_datetime;
 
                   return (
                     <tr key={index} className={`hover:bg-grey-lighter cursor-pointer ${rowClass}`}>
@@ -381,24 +382,17 @@ const VisitLogs = ({ VisitLog, totalVisitLog, isLoading, onActionClick, searchPa
                             </ListItemIcon>
                             <ListItemText primary="View Visit Details" />
                           </MenuItem>
-                          {visitlog.out_datetime ? (
-                          <>
-                            {console.log('Out Date Time:', visitlog.out_datetime)}
-                            <MenuItem
-                              onClick={() => { 
-                                onActionClick('view', visitlog); 
-                                setShowViewVisitLog(true); 
-                                handleClose(); 
-                              }}
-                            >
-                              <ListItemIcon>
-                                <EventIcon fontSize="small" />
-                              </ListItemIcon>
-                              <ListItemText primary="View Visit Log" />
-                            </MenuItem>
-                          </>
-                        ) : null}
-
+                          <MenuItem
+                            onClick={() => { 
+                              onActionClick('update', currentSelectedVisitLog);
+                              handleClose(); 
+                            }}
+                          >
+                            <ListItemIcon>
+                              <EventIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText primary="Log Exit" />
+                          </MenuItem>
                         </Menu>
                       </td>
                     </tr>

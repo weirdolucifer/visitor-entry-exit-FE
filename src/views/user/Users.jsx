@@ -4,9 +4,9 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import LockResetIcon from "@mui/icons-material/LockReset";
 import AddIcon from "@mui/icons-material/Add";
 import Alert from "../../components/alert/index.jsx";
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 import Pagination from "../../components/pagination/index.jsx";
 
 const Users = ({ users, isLoading, onActionClick }) => {
@@ -182,11 +182,11 @@ const Users = ({ users, isLoading, onActionClick }) => {
                         </ListItemIcon>
                         <ListItemText primary="Delete" />
                       </MenuItem>
-                      <MenuItem onClick={() => { onActionClick('resetPassword', currentSelectedUser); handleClose(); }}>
+                      <MenuItem onClick={() => { onActionClick('pass', currentSelectedUser); handleClose(); }}>
                         <ListItemIcon>
-                          <LockResetIcon fontSize="small" />
+                          <CreditCardIcon fontSize="small" />
                         </ListItemIcon>
-                        <ListItemText primary="Reset Password" />
+                        <ListItemText primary="Generate Pass" />
                       </MenuItem>
                     </Menu>
                   </td>

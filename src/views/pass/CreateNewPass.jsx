@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import Notification from '../../components/notification';
 import { url } from '../../utils/Constants';
-import Select from 'react-select';
 import ViewPass from "./ViewPass";
 import CameraModal from "../../components/camera";
-import MultipleSelectDropdown from './MultipleSelectDropdown';
 
-const CreateNewPass = ({ open, onClose, visitor }) => {
+const CreateNewPass = ({ open, onClose, visitor, employee = false }) => {
+
     const initialValues = {
-        visitor: visitor.id,
+        visitor: !employee ? visitor?.id : undefined,
+        employee: employee ? visitor?.id : undefined,
         validity: '',
         pass_type: '',
         pass_image: '',
@@ -26,12 +26,27 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
     const [imageModalOpen, setImageModalOpen] = useState(false);
     const [imageData, setImageData] = useState('');
 
+    const employeePassOptions = [
+        { value: "emp_work_pass", label: "Work Pass (Employee)" },
+        { value: "emp_daily_pass", label: "Daily Pass" },
+        { value: "emp_temp_veh_pass", label: "Temporary Vehicle Pass" },
+      ];
+      
+    const visitorPassOptions = [
+        { value: "visitor", label: "Visitor" },
+        { value: "foreigner_visitor", label: "Visitor (Foreigner)" },
+        { value: "work_pass", label: "Work Pass" },
+        { value: "na", label: "Not Applicable" },
+      ];
+    
+    const passOptions = employee ? employeePassOptions : visitorPassOptions;
+
     useEffect(() => {
         setPassData(currentData => ({
             ...currentData,
-            visitor: visitor?.id,
+            ...(employee ? { employee: visitor?.id } : { visitor: visitor?.id }),
         }));
-    }, [visitor]);
+    }, [visitor, employee]);
 
     useEffect(() => {
         if (!passData.validity) {
@@ -184,20 +199,21 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
                 return (
                     <div className="flex flex-col space-y-4">
                         <label htmlFor="visitor" className="text-sm font-medium text-gray-700">
-                            Visitor ID
+                            {employee ? "Employee ID" : "Visitor ID"}
                         </label>
                         <input
                             type="text"
-                            id="visitor"
-                            name="visitor"
-                            placeholder="Visitor ID"
-                            value={passData.visitor}
+                            id={employee ? "employee" : "visitor"}
+                            name={employee ? "employee" : "visitor"}
+                            placeholder={employee ? "Employee ID" : "Visitor ID"}
+                            value={employee ? passData.employee : passData.visitor}
                             onChange={handleInputChange}
                             disabled
-                            className={`border-2 p-3 rounded-lg ${errors.visitor ? 'border-red-500' : 'border-gray-300'}`}
+                            className={`border-2 p-3 rounded-lg ${errors.visitor || errors.employee ? 'border-red-500' : 'border-gray-300'}`}
                         />
-                        {errors.visitor && <div className="text-red-500 text-xs">{errors.visitor}</div>}
-                        
+                        {(errors.visitor || errors.employee) && (
+                            <div className="text-red-500 text-xs">{errors.visitor || errors.employee}</div>
+                        )}
                         <label htmlFor="visiting_department" className="text-sm font-medium text-gray-700">
                             Pass Type
                         </label>
@@ -208,11 +224,12 @@ const CreateNewPass = ({ open, onClose, visitor }) => {
                             onChange={handleInputChange}
                             className={`border-2 p-3 rounded-lg ${errors.pass_type ? 'border-red-500' : 'border-gray-300'}`}
                         >
-                            <option value="">Select Pass Type</option>
-                            <option value="visitor">Visitor</option>
-                            <option value="foreigner_visitor">Visitor (Foreigner)</option>
-                            <option value="work_pass">Work Pass</option>
-                            <option value="na">Not Applicable</option>
+                            <option value=''>Select Pass Type</option>
+                            {passOptions.map((opt) => (
+                                <option key={opt.value} value={opt.value}>
+                                    {opt.label}
+                                </option>
+                            ))}
                         </select>
                         {errors.pass_type && <div className="text-red-500 text-xs">{errors.pass_type}</div>}
 

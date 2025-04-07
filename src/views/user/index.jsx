@@ -8,21 +8,21 @@ import Users from './Users';
 import UserProfile from './UserProfile';
 import UpdateUser from './UpdateUser';
 import AddNewUser from './AddNewUser';
-import ResetPasswordUser from './ResetPasswordUser';
+import CreateNewPass from '../pass/CreateNewPass';
 
 const User = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [addNewUserModalOpen, setAddNewUserModalOpen] = useState(false);
-  const [resetPasswordModalOpen, setResetPasswordModalOpen] = useState(false);
+  const [createNewPassModalOpen, setCreateNewPassModalOpen] = useState(false);
 
   const handleActionClick = (action, user = null) => {
     if (user) setSelectedUser(user);
     if (action === 'view') setViewModalOpen(true);
     if (action === 'update') setUpdateModalOpen(true);
     if (action === 'addNewUser') setAddNewUserModalOpen(true);
-    if (action === 'resetPassword') setResetPasswordModalOpen(true);
+    if (action === 'pass') setCreateNewPassModalOpen(true);
   };
 
   let history = useNavigate();
@@ -73,7 +73,7 @@ const User = () => {
       {selectedUser && (<>
         <UserProfile open={viewModalOpen} onClose={() => setViewModalOpen(false)} user={selectedUser} onActionClick={handleActionClick} />
         <UpdateUser open={updateModalOpen} onClose={() => setUpdateModalOpen(false)} user={selectedUser} fetchData={fetchData} />
-        <ResetPasswordUser open={resetPasswordModalOpen} onClose={() => setResetPasswordModalOpen(false)} user={selectedUser} />
+        <CreateNewPass open={createNewPassModalOpen} onClose={() => setCreateNewPassModalOpen(false)} visitor={selectedUser} employee={true} />
       </>
       )}
       <AddNewUser open={addNewUserModalOpen} onClose={() => setAddNewUserModalOpen(false)} fetchData={fetchData} />
