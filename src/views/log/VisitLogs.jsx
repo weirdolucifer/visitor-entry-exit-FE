@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, IconButton, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import EventIcon from '@mui/icons-material/Event';
 import Alert from "../../components/alert/index.jsx";
 import CircularProgress from "@mui/material/CircularProgress";
 import Pagination from "../../components/pagination/index.jsx";
@@ -355,7 +356,7 @@ const VisitLogs = ({ VisitLog, totalVisitLog, isLoading, onActionClick, searchPa
                         {new Date(visitlog.in_datetime).toLocaleString('en-IN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
                       </td>
                       <td className="py-4 px-6 border-b border-grey-light">
-                        {new Date(visitlog.out_datetime).toLocaleString('en-IN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
+                        {visitlog.out_datetime? new Date(visitlog.out_datetime).toLocaleString('en-IN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }): ''}
                       </td>
                       <td className="py-4 px-6 border-b border-grey-light">{visitlog.purpose_of_visit}</td>
                       <td className="py-4 px-6 border-b border-grey-light">
@@ -380,6 +381,24 @@ const VisitLogs = ({ VisitLog, totalVisitLog, isLoading, onActionClick, searchPa
                             </ListItemIcon>
                             <ListItemText primary="View Visit Details" />
                           </MenuItem>
+                          {visitlog.out_datetime ? (
+                          <>
+                            {console.log('Out Date Time:', visitlog.out_datetime)}
+                            <MenuItem
+                              onClick={() => { 
+                                onActionClick('view', visitlog); 
+                                setShowViewVisitLog(true); 
+                                handleClose(); 
+                              }}
+                            >
+                              <ListItemIcon>
+                                <EventIcon fontSize="small" />
+                              </ListItemIcon>
+                              <ListItemText primary="View Visit Log" />
+                            </MenuItem>
+                          </>
+                        ) : null}
+
                         </Menu>
                       </td>
                     </tr>
