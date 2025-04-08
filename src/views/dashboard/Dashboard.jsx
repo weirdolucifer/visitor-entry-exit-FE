@@ -63,13 +63,8 @@ const Dashboard = () => {
 
   const today = formatDate(new Date());
 
-  // Define the expected time slots
-  const expectedTimeSlots = [
-    "09:00:00", "09:30:00", "10:00:00", "10:30:00", "11:00:00", "11:30:00",
-    "12:00:00", "12:30:00", "13:00:00", "13:30:00", "14:00:00", "14:30:00",
-    "15:00:00", "15:30:00", "16:00:00", "16:30:00", "17:00:00", "17:30:00",
-    "18:00:00", "18:30:00", "19:00:00",
-  ];
+  // Define the expected time slots from 05:00 to 22:00
+  const expectedTimeSlots = ['09:00'];
 
   // Populate counts with the expected time slots, filling missing slots with 0
   const counts = {};
@@ -84,6 +79,12 @@ const Dashboard = () => {
   Object.keys(todayVisitorData).forEach((timestamp) => {
     const time = timestamp.split(" ")[1];  // Extract time part
     counts[time] = todayVisitorData[timestamp];  // Override with actual data
+  });
+
+  const endslot = ['20:00'];
+  endslot.forEach((time) => {
+    const key = `${today} ${time}`;
+    counts[time] = todayVisitorData[key] || 0;  // If no data, set 0
   });
 
   const lineChartData = {
