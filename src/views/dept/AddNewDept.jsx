@@ -1,29 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { Dialog, DialogTitle } from "@mui/material";
+import React, { useState } from 'react';
+import { Dialog, DialogTitle } from '@mui/material';
 import Notification from "../../components/notification";
 import { url } from "../../utils/Constants";
 
-const UpdateUser = ({ open, onClose, user, fetchData }) => {
+const AddNewDept = ({ open, onClose, fetchData }) => {
   const initialValues = {
-    employee_id: "",
-    name: "",
-    rank: "",
-    extension: "",
-  };
+    name: '',
+    extension: '',
+  }
 
   const [userData, setUserData] = useState(initialValues);
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
-    setUserData(user); // Populate the fields with existing user data
-  }, [open, user]);
-
   const validate = () => {
     const newErrors = {};
-    if (!userData.employee_id.trim()) newErrors.employee_id = "Employee ID is required";
-    if (!userData.name.trim()) newErrors.name = "Name is required";
-    if (!userData.rank.trim()) newErrors.rank = "Rank is required";
-    if (!userData.extension.trim()) newErrors.extension = "Extension is required";
+    if (!userData.name.trim()) newErrors.name = 'Name is required';
+    if (!userData.extension.trim()) newErrors.extension = 'Extension is required';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -32,15 +24,15 @@ const UpdateUser = ({ open, onClose, user, fetchData }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
-    setErrors({ ...errors, [name]: null }); // Clear specific error for that field
+    setErrors({ ...errors, [name]: null }); // Clear errors
   };
 
   const handleSave = async () => {
     if (!validate()) return;
 
     try {
-      const response = await fetch(`${url}/accounts/employee/${userData.id}/`, {
-        method: "PATCH",
+      const response = await fetch(`${url}/accounts/department/`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -49,9 +41,10 @@ const UpdateUser = ({ open, onClose, user, fetchData }) => {
       });
 
       if (response.ok) {
-        Notification.showSuccessMessage("Success", "Employee Updated Successfully");
-        fetchData(); // Refresh data
-        handleClose(); // Close the modal
+        Notification.showSuccessMessage("Success", "Department Added Successfully");
+        fetchData();
+        setUserData(initialValues);
+        handleClose();
       } else {
         const json = await response.json();
         let message = "";
@@ -68,7 +61,7 @@ const UpdateUser = ({ open, onClose, user, fetchData }) => {
   const handleClose = () => {
     onClose();
     setErrors({});
-    setUserData(initialValues); // Reset to initial values
+    setUserData(initialValues);
   };
 
   return (
@@ -81,7 +74,7 @@ const UpdateUser = ({ open, onClose, user, fetchData }) => {
     >
       <div className="bg-white p-5">
         <DialogTitle as="h2" className="text-lg font-bold leading-6 text-gray-900 text-center">
-          Update Employee
+          Add New Department
         </DialogTitle>
         <div className="px-4 py-5 sm:p-6">
           {/* User Form */}
@@ -96,28 +89,6 @@ const UpdateUser = ({ open, onClose, user, fetchData }) => {
               onChange={handleInputChange}
             />
             {errors.name && <div className="text-red-500 text-xs">{errors.name}</div>}
-
-            <label htmlFor="employee_id" className="text-sm font-medium text-gray-700">Card No.</label>
-            <input
-              className={`border-2 p-3 rounded-lg ${errors.employee_id ? 'border-red-500' : 'border-gray-300'}`}
-              id="employee_id"
-              name="employee_id"
-              placeholder="Card No."
-              value={userData.employee_id}
-              onChange={handleInputChange}
-            />
-            {errors.employee_id && <div className="text-red-500 text-xs">{errors.employee_id}</div>}
-
-            <label htmlFor="rank" className="text-sm font-medium text-gray-700">Rank</label>
-            <input
-              className={`border-2 p-3 rounded-lg ${errors.rank ? 'border-red-500' : 'border-gray-300'}`}
-              id="rank"
-              name="rank"
-              placeholder="Rank"
-              value={userData.rank}
-              onChange={handleInputChange}
-            />
-            {errors.rank && <div className="text-red-500 text-xs">{errors.rank}</div>}
 
             <label htmlFor="extension" className="text-sm font-medium text-gray-700">Extension</label>
             <input
@@ -146,4 +117,4 @@ const UpdateUser = ({ open, onClose, user, fetchData }) => {
   );
 };
 
-export default UpdateUser;
+export default AddNewDept;

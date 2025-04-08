@@ -12,6 +12,7 @@ import Visitor from "./views/visitor";
 import Pass from "./views/pass";
 import VisitLog from "./views/log";
 import Faq from "./views/auth/Faq";
+import Dept from "./views/dept";
 
 function App() {
   return (
@@ -53,7 +54,9 @@ function Content() {
           <>
             <Route path="/" element={<Dashboard />} />
             <Route path="/visitor" element={<Visitor />} />
+            <Route path="/dept" element={<Dept />} />
             <Route path="/pass" element={<Pass />} />
+            <Route path="/log" element={<VisitLog />} />
             <Route path="/faq" element={<Faq />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </>
@@ -63,6 +66,7 @@ function Content() {
           <>
             <Route path="/" element={<Dashboard />} />
             <Route path="/user" element={<User />} />
+            <Route path="/dept" element={<Dept />} />
             <Route path="/visitor" element={<Visitor />} />
             <Route path="/faq" element={<Faq />} />
             <Route path="/pass" element={<Pass />} />

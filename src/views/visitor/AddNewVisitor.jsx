@@ -244,7 +244,7 @@ const AddNewVisitor = ({ open, onClose, fetchData, onActionClick }) => {
         );
       case 3:
         return (
-          <div className="flex flex-row space-x-4 p-4">
+          <div className="flex justify-center space-x-4 p-4">
             <div className="space-y-4 flex flex-col items-center">
               <label htmlFor="image" className="text-sm font-semibold text-gray-700">Image</label>
               <div className="border-2 border-gray-300 rounded-lg p-3 flex items-center justify-center relative" style={{ width: '200px', height: '200px' }}>

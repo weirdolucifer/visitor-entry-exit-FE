@@ -8,7 +8,7 @@ const Dashboard = () => {
   const [todayVisitorData, setTodayVisitorData] = useState({});
   const [weeklyVisitorData, setWeeklyVisitorData] = useState({});
   const [todayStatsData, setTodayStatsData] = useState({});
-  
+
   const getTodaysStats = async () => {
     try {
       const response = await fetch(`${url}/passes/visit-stats/`, {
@@ -28,17 +28,6 @@ const Dashboard = () => {
       Notification.showErrorMessage("Error", "Server error!");
     }
   };
-
-
-  function calculateMinutesBetweenDates(startTime, endTime) {
-    const startDate = new Date(startTime);
-    const endDate = new Date(endTime);
-    const diffInMs = endDate - startDate;
-    const minutes = diffInMs / 60000;
-    return Math.max(0, Math.round(minutes));
-  }
-
-  const currentTime = new Date().toISOString();
 
   const getTodayVisitorVisitDashboard = async () => {
     try {
@@ -74,37 +63,28 @@ const Dashboard = () => {
 
   const today = formatDate(new Date());
 
-  const counts = {
-    "9am":
-      todayVisitorData[`${today} 09:00:00`] +
-      todayVisitorData[`${today} 09:30:00`],
-    "10am":
-      todayVisitorData[`${today} 10:00:00`] +
-      todayVisitorData[`${today} 10:30:00`],
-    "11am":
-      todayVisitorData[`${today} 11:00:00`] +
-      todayVisitorData[`${today} 11:30:00`],
-    "12pm":
-      todayVisitorData[`${today} 12:00:00`] +
-      todayVisitorData[`${today} 12:30:00`],
-    "1pm":
-      todayVisitorData[`${today} 13:00:00`] +
-      todayVisitorData[`${today} 13:30:00`],
-    "2pm":
-      todayVisitorData[`${today} 14:00:00`] +
-      todayVisitorData[`${today} 14:30:00`],
-    "3pm":
-      todayVisitorData[`${today} 15:00:00`] +
-      todayVisitorData[`${today} 15:30:00`],
-    "4pm":
-      todayVisitorData[`${today} 16:00:00`] +
-      todayVisitorData[`${today} 16:30:00`],
-    "5pm":
-      todayVisitorData[`${today} 17:00:00`] +
-      todayVisitorData[`${today} 17:30:00`],
-    "6pm": todayVisitorData[`${today} 18:00:00`],
-    "7pm": 0,
-  };
+  // Define the expected time slots
+  const expectedTimeSlots = [
+    "09:00:00", "09:30:00", "10:00:00", "10:30:00", "11:00:00", "11:30:00",
+    "12:00:00", "12:30:00", "13:00:00", "13:30:00", "14:00:00", "14:30:00",
+    "15:00:00", "15:30:00", "16:00:00", "16:30:00", "17:00:00", "17:30:00",
+    "18:00:00", "18:30:00", "19:00:00",
+  ];
+
+  // Populate counts with the expected time slots, filling missing slots with 0
+  const counts = {};
+
+  // Loop through the expected times and fill in missing data from the API
+  expectedTimeSlots.forEach((time) => {
+    const key = `${today} ${time}`;
+    counts[time] = todayVisitorData[key] || 0;  // If no data, set 0
+  });
+
+  // Now, include the actual timestamps from the API response
+  Object.keys(todayVisitorData).forEach((timestamp) => {
+    const time = timestamp.split(" ")[1];  // Extract time part
+    counts[time] = todayVisitorData[timestamp];  // Override with actual data
+  });
 
   const lineChartData = {
     labels: Object.keys(counts),
@@ -163,7 +143,7 @@ const Dashboard = () => {
       <div className="m-12 grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Weekly Visitors */}
         <div className="bg-white border rounded shadow p-4 h-80">
-          <h2 class="text-lg font-bold mb-3">Weekly Visitors</h2>
+          <h2 className="text-lg font-bold mb-3">Weekly Visitors</h2>
           <div className="h-64 p-4">
             <Bar data={barChartData} options={{ maintainAspectRatio: false }} />
           </div>
@@ -171,7 +151,7 @@ const Dashboard = () => {
 
         {/* Today Visits */}
         <div className="bg-white border rounded shadow p-4 h-80">
-          <h2 class="text-lg font-bold mb-3">Today's Visitors</h2>
+          <h2 className="text-lg font-bold mb-3">Today's Visitors</h2>
           <div className="h-64 p-4">
             <Line
               data={lineChartData}
@@ -182,17 +162,17 @@ const Dashboard = () => {
 
         {/* Number of People in Zones */}
         <div className="bg-white border rounded shadow p-4 h-80">
-          <h2 class="text-lg font-bold mb-3">Today's Stats</h2>
+          <h2 className="text-lg font-bold mb-3">Today's Stats</h2>
           <div className="h-64 p-4">
-          <h3 className="text-lg p-4 border-b">
-            Passes Issued Today: {todayStatsData.passes_issued_today}
-          </h3>
-          <h3 className="text-lg p-4 border-b">
-            Passes Expiring Today: {todayStatsData.passes_expiring_today}
-          </h3>
-          <h3 className="text-lg p-4 border-b">
-            Visitors Inside Premise: {todayStatsData.persons_still_in}
-          </h3>
+            <h3 className="text-lg p-4 border-b">
+              Passes Issued Today: {todayStatsData.passes_issued_today}
+            </h3>
+            <h3 className="text-lg p-4 border-b">
+              Passes Expiring Today: {todayStatsData.passes_expiring_today}
+            </h3>
+            <h3 className="text-lg p-4 border-b">
+              Visitors Inside Premise: {todayStatsData.persons_still_in}
+            </h3>
           </div>
         </div>
       </div>

@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { url } from "../../utils/Constants.jsx";
 import Notification from "../../components/notification/index.jsx";
 
-import Users from './Users';
-import UpdateUser from './UpdateUser';
-import AddNewUser from './AddNewUser';
+import Depts from './Depts.jsx';
+import UpdateDept from './UpdateDept.jsx';
+import AddNewDept from './AddNewDept.jsx';
 import CreateNewPass from '../pass/CreateNewPass';
 
-const User = () => {
+const Dept = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [addNewUserModalOpen, setAddNewUserModalOpen] = useState(false);
@@ -37,7 +37,7 @@ const User = () => {
     setIsLoading(true);
     try {
       const queryString = new URLSearchParams(searchParams).toString();
-      const response = await fetch(`${url}/accounts/employee/?${queryString}`, {
+      const response = await fetch(`${url}/accounts/department/?${queryString}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -65,15 +65,15 @@ const User = () => {
 
   return (
     <div style={{marginBottom:"55px"}}>
-      {userData && (<Users users={userData} isLoading={isLoading} onActionClick={handleActionClick} />)}
+      {userData && (<Depts users={userData} isLoading={isLoading} onActionClick={handleActionClick} />)}
       {selectedUser && (<>
-        <UpdateUser open={updateModalOpen} onClose={() => setUpdateModalOpen(false)} user={selectedUser} fetchData={fetchData} />
+        <UpdateDept open={updateModalOpen} onClose={() => setUpdateModalOpen(false)} user={selectedUser} fetchData={fetchData} />
         <CreateNewPass open={createNewPassModalOpen} onClose={() => setCreateNewPassModalOpen(false)} visitor={selectedUser} employee={true} />
       </>
       )}
-      <AddNewUser open={addNewUserModalOpen} onClose={() => setAddNewUserModalOpen(false)} fetchData={fetchData} />
+      <AddNewDept open={addNewUserModalOpen} onClose={() => setAddNewUserModalOpen(false)} fetchData={fetchData} />
     </div>
   );
 };
 
-export default User;
+export default Dept;

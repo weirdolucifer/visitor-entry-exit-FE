@@ -9,7 +9,7 @@ import Alert from "../../components/alert/index.jsx";
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import Pagination from "../../components/pagination/index.jsx";
 
-const Users = ({ users, isLoading, onActionClick }) => {
+const Depts = ({ users, isLoading, onActionClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [currentSelectedUser, setCurrentSelectedUser] = useState(null);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
@@ -69,7 +69,7 @@ const Users = ({ users, isLoading, onActionClick }) => {
             <input
               className="appearance-none border border-customGreen rounded-3xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-700"
               type="text"
-              placeholder="Search UserName/Name"
+              placeholder="Search Department Name"
               value={searchTerm}
               onChange={handleSearchChange}
             />
@@ -101,19 +101,10 @@ const Users = ({ users, isLoading, onActionClick }) => {
             <thead>
               <tr>
                 <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light text-center">
-                  Employee Image
+                  Department ID
                 </th>
                 <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
-                  Employee ID
-                </th>
-                <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
-                  Employee Name
-                </th>
-                <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
-                  Rank
-                </th>
-                <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
-                  Card No
+                  Department Name
                 </th>
                 <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
                   Extension
@@ -123,30 +114,11 @@ const Users = ({ users, isLoading, onActionClick }) => {
             <tbody>
               {currentUsers?.map((user, index) => (
                 <tr key={index} className="hover:bg-grey-lighter">
-                  <td className="py-1 px-1 border-b border-grey-light">
-                    <div className="flex justify-center">
-                      <div className="inline-block h-16 w-16 border-2 border-gray-300 rounded-full overflow-hidden bg-customGreen">
-                        {user.image ? (
-                          <img src={`data:image/jpeg;base64,${user.image}`} alt="User" />
-                        ) : (
-                          <div className="h-full w-full flex items-center justify-center text-white bg-customGreen">
-                            {user.name ? user.name.charAt(0).toUpperCase() : 'N'}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6 border-b border-grey-light">
+                  <td className="py-4 px-6 border-b border-grey-light text-center">
                     {user.id}
                   </td>
                   <td className="py-4 px-6 border-b border-grey-light">
                     {user.name}
-                  </td>
-                  <td className="py-4 px-6 border-b border-grey-light">
-                    {user.rank}
-                  </td>
-                  <td className="py-4 px-6 border-b border-grey-light">
-                    {user.employee_id}
                   </td>
                   <td className="py-4 px-6 border-b border-grey-light">
                     {user.extension}
@@ -179,12 +151,6 @@ const Users = ({ users, isLoading, onActionClick }) => {
                         </ListItemIcon>
                         <ListItemText primary="Delete" />
                       </MenuItem>
-                      <MenuItem onClick={() => { onActionClick('pass', currentSelectedUser); handleClose(); }}>
-                        <ListItemIcon>
-                          <CreditCardIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Generate Pass" />
-                      </MenuItem>
                     </Menu>
                   </td>
                 </tr>
@@ -195,7 +161,7 @@ const Users = ({ users, isLoading, onActionClick }) => {
         </div>
       ) : (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh', textAlign: 'center' }}>
-          <p>No users found.</p>
+          <p>No Department found.</p>
         </Box>
       )}
       <Alert
@@ -211,5 +177,5 @@ const Users = ({ users, isLoading, onActionClick }) => {
   );
 };
 
-export default Users;
+export default Depts;
 

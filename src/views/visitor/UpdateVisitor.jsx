@@ -316,7 +316,7 @@ const UpdateVisitor = ({ open, onClose, visitor, fetchData }) => {
         );
       case 3:
         return (
-          <div className="flex flex-row space-x-4 p-4">
+          <div className="flex justify-center space-x-4 p-4">
             <div className="space-y-4 flex flex-col items-center">
               <label htmlFor="image" className="text-sm font-semibold text-gray-700">Image</label>
               <div className="border-2 border-gray-300 rounded-lg p-3 flex items-center justify-center relative" style={{ width: '200px', height: '200px' }}>
@@ -330,21 +330,6 @@ const UpdateVisitor = ({ open, onClose, visitor, fetchData }) => {
                 Capture Image
               </button>
               <CameraModal open={imageModalOpen} onClose={() => setImageModalOpen(false)} onCaptured={handleImageCapture} />
-            </div>
-
-            <div className="space-y-4 flex flex-col items-center">
-              <label htmlFor="signature" className="text-sm font-semibold text-gray-700">Signature</label>
-              <div className="border-2 border-gray-300 rounded-lg p-3 flex items-center justify-center relative" style={{ width: '200px', height: '200px' }}>
-                {signatureData ? (
-                  <img src={`data:image/jpeg;base64,${signatureData}`} alt="Captured Signature" className="max-h-full max-w-full rounded" />
-                ) : (
-                  <span className="text-gray-500">No signature captured</span>
-                )}
-              </div>
-              <button className="flex items-center bg-customGreen hover:bg-green-700 text-white py-1 px-4 rounded-3xl" onClick={() => setSignatureModalOpen(true)}>
-                Capture Signature
-              </button>
-              <CameraModal open={signatureModalOpen} onClose={() => setSignatureModalOpen(false)} onCaptured={handleSignatureCapture} />
             </div>
           </div>
 
